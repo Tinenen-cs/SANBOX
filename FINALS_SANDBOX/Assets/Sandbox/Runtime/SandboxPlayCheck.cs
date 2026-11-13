@@ -51,6 +51,13 @@ namespace Mossmere
             int originalSorting=visual.sortingLayerID;
             Check(player.gameObject.layer==9,"Player starts on Player collision layer");
             Check(visual.sprite!=null,"Imported player sprites assigned");
+            var hud=FindFirstObjectByType<GameHud>();
+            Check(hud!=null && hud.HudCanvas!=null && hud.AreaText.text=="Village","English HUD and location visible");
+            Check(hud.music!=null && hud.music.clip!=null && hud.music.clip.length>=30 && hud.music.loop && hud.music.isPlaying,"Looping background music is playing");
+            var audioData=new float[8192];hud.music.clip.GetData(audioData,4410);
+            Check(audioData.Any(value=>Mathf.Abs(value)>.001f),"Music contains audible samples");
+            bool wasMuted=hud.music.mute;hud.MusicButton.onClick.Invoke();Check(hud.music.mute!=wasMuted,"English music button toggles audio");hud.MusicButton.onClick.Invoke();
+            Check(FindObjectsByType<ReturnBeacon>(FindObjectsSortMode.None).All(b=>b.transform.Find("Glowing return ring")!=null && b.transform.Find("RETURN TO SPAWN label")!=null),"Every return zone has a glow ring, beam and English label");
             yield return Capture("01-village");
 
             var zones=FindObjectsByType<ReturnZone>(FindObjectsSortMode.None).OrderBy(z=>z.name).ToArray();
@@ -117,6 +124,8 @@ namespace Mossmere
             player.ReturnToSpawn();
             Check(player.Body.linearVelocity==Vector2.zero && player.Body.angularVelocity==0,"Manual return clears residual motion");
             Check(player.gameObject.layer==9 && !player.GetComponent<BoxCollider2D>().isTrigger && visual.renderingLayerMask==originalRendering,"Manual return restores collision and rendering");
+            player.Body.position=Vector2.right*2;player.transform.position=player.Body.position;
+            hud.HomeButton.onClick.Invoke();Check(Vector2.Distance(player.Body.position,player.spawn)<.02f,"English HUD return button returns to spawn");
             yield return Capture("02-final-spawn");
             Time.timeScale=1;
             File.WriteAllText(Path.Combine(qa,"playcheck-result.txt"),"PASS\n"+string.Join("\n",checks)+"\nCompleted: "+DateTime.Now.ToString("O"));

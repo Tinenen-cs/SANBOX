@@ -155,16 +155,22 @@ public static class SandboxWorkshop
         Zone(zones.transform,"Woodland cottage",new Vector2(-23,17));
         Zone(zones.transform,"Northern lookout",new Vector2(12,21));
         Zone(zones.transform,"Lakeside pier",new Vector2(22,-1));
+        var soundtrack=AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sandbox/Audio/Mossmere-Meadow.wav");
+        if(soundtrack==null)throw new Exception("Original music asset is missing");
+        var musicObj=new GameObject("Mossmere Meadow - original background music");
+        var music=musicObj.AddComponent<AudioSource>();music.clip=soundtrack;music.loop=true;music.playOnAwake=true;music.volume=.23f;music.spatialBlend=0;
+        var hud=new GameObject("Game HUD and controls").AddComponent<GameHud>();hud.player=explorer;hud.music=music;
         player.AddComponent<SandboxPlayCheck>();
         ConfigureLayers();
         PlayerSettings.companyName="Tinenen-cs"; PlayerSettings.productName="Mossmere";
+        PlayerSettings.bundleVersion="1.1.0";
         PlayerSettings.defaultScreenWidth=1280; PlayerSettings.defaultScreenHeight=720;
         PlayerSettings.fullScreenMode=FullScreenMode.Windowed; PlayerSettings.runInBackground=true;
         PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Standalone,ScriptingImplementation.Mono2x);
         EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(),Scene);
         EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(Scene,true)};
         AssetDatabase.SaveAssets();
-        File.WriteAllText(Path.Combine(Root,"QA/asset-inspection.txt"),"Goldmetal Top-Down 2D RPG Assets Pack; product ID 188718; version 1.0.\nImported path: "+Pack+"\nSource demo: "+Pack+"Demo/Demo.unity\nExpanded scene: "+Scene+"\nOriginal demo retained unchanged; original assemblies retained disabled in expanded scene.\nTerrain uses source sprite tiles. Four connected branches plus southern loop, four return zones. No HUD.\nTrees placed: "+treePositions.Count);
+        File.WriteAllText(Path.Combine(Root,"QA/asset-inspection.txt"),"Goldmetal Top-Down 2D RPG Assets Pack; product ID 188718; version 1.0.\nImported path: "+Pack+"\nSource demo: "+Pack+"Demo/Demo.unity\nExpanded scene: "+Scene+"\nOriginal demo retained unchanged; original assemblies retained disabled in expanded scene.\nTerrain uses source sprite tiles. Four connected branches plus southern loop, four return zones. Compact English HUD, original background music and glowing labeled return beacons.\nTrees placed: "+treePositions.Count);
     }
     static Tilemap Map(Grid grid,string name,int order)
     {
@@ -228,6 +234,10 @@ public static class SandboxWorkshop
         // In-world markers made entirely from the pack's rocks and white flowers.
         foreach(var offset in new[]{new Vector2(-.8f,0),new Vector2(.8f,0),new Vector2(0,.8f),new Vector2(0,-.8f)})Prop(o.transform,"Flower A0",p+offset,false);
         var stone=Prop(o.transform,"Rock",p,false);stone.GetComponent<SpriteRenderer>().color=new Color(.7f,1,1,1);
+        string path="Assets/Sandbox/ReturnBeaconGlow.mat";
+        var glow=AssetDatabase.LoadAssetAtPath<Material>(path);
+        if(glow==null){glow=new Material(Shader.Find("Mossmere/ReturnBeaconGlow"));AssetDatabase.CreateAsset(glow,path);}
+        var beacon=o.AddComponent<ReturnBeacon>();beacon.glowMaterial=glow;beacon.BuildVisuals();
     }
     static void ConfigureLayers()
     {
@@ -237,7 +247,8 @@ public static class SandboxWorkshop
     [MenuItem("Mossmere/Build Windows x64")]
     public static void Build()
     {
-        string output=Path.GetFullPath(Path.Combine(Root,"../Deliverables/Mossmere-Windows-x64/Mossmere.exe"));
+        PlayerSettings.bundleVersion="1.1.0";
+        string output=Path.GetFullPath(Path.Combine(Root,"../Deliverables/Mossmere-Windows-x64-v2/Mossmere.exe"));
         Directory.CreateDirectory(Path.GetDirectoryName(output));
         var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {scenes=new[]{Scene},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
         File.WriteAllText(Path.Combine(Root,"QA/build-result.txt"),report.summary.result+"\nErrors: "+report.summary.totalErrors+"\nBytes: "+report.summary.totalSize+"\nTime: "+report.summary.totalTime);

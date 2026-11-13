@@ -27,7 +27,8 @@ namespace Mossmere
             bool ok=false;string result;
             var player=FindFirstObjectByType<Explorer>();
             var zones=FindObjectsByType<ReturnZone>(FindObjectsSortMode.None);
-            if(player==null || zones.Length!=4 || player.GetComponent<SpriteRenderer>().sprite==null)
+            var hud=FindFirstObjectByType<GameHud>();
+            if(player==null || zones.Length!=4 || player.GetComponent<SpriteRenderer>().sprite==null || hud==null || hud.HudCanvas==null || hud.music==null || hud.music.clip==null)
             {
                 File.WriteAllText(Path.Combine(output,"standalone-result.txt"),"FAIL: missing scene, sprites or return zones");Application.Quit(1);yield break;
             }
@@ -46,7 +47,7 @@ namespace Mossmere
                 var texture=new Texture2D(1280,720,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,1280,720),0,0);texture.Apply();
                 File.WriteAllBytes(Path.Combine(output,"standalone-spawn.png"),texture.EncodeToPNG());
                 RenderTexture.active=previous;Destroy(texture);RenderTexture.ReleaseTemporary(target);
-                result=ok?"PASS: Windows x64 player loads expanded scene, source sprites, four return zones; trigger restores spawn, movement and layers.":"FAIL: standalone return state";
+                result=ok?"PASS: Windows x64 player loads expanded scene, English HUD, original background music and four glowing return beacons; trigger restores spawn, movement and layers.":"FAIL: standalone return state";
             }
             catch(Exception e){ok=false;result="FAIL: standalone render: "+e;}
             File.WriteAllText(Path.Combine(output,"standalone-result.txt"),result);

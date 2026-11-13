@@ -3,5 +3,5 @@ Imported path: Assets/TopDown 2D RPG BE3/
 Source demo: Assets/TopDown 2D RPG BE3/Demo/Demo.unity
 Expanded scene: Assets/Scenes/Mossmere.unity
 Original demo retained unchanged; original assemblies retained disabled in expanded scene.
-Terrain uses source sprite tiles. Four connected branches plus southern loop, four return zones. No HUD.
+Terrain uses source sprite tiles. Four connected branches plus southern loop, four return zones. Compact English HUD, original background music and glowing labeled return beacons.
 Trees placed: 180

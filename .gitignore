@@ -24,6 +24,8 @@ Deliverables/
 **/playcheck.run
 **/QA/*-editor.txt
 **/QA/playcheck-progress.txt
+**/QA/sfx-verified/
+**/QA/resolution-check/
 # Obtain the source art from the original Asset Store publisher.
 FINALS_SANDBOX/Assets/TopDown 2D RPG BE3/
 FINALS_SANDBOX/Assets/TopDown 2D RPG BE3.meta

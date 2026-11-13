@@ -2,7 +2,7 @@
 
 A small top-down exploration game by Tinenen-cs, built with Goldmetal's **Top-Down 2D RPG Assets Pack** (Asset Store product 188718).
 
-The supplied demo's house and tree assemblies become an island village with branching woodland trails, a flower meadow, a northern lookout, a lakeside pier, and a southern walking loop. Paths bend between asymmetrical clearings. Trees and flowers form uneven clusters. There are no persistent HUD panels.
+The supplied demo's house and tree assemblies become an island village with branching woodland trails, a flower meadow, a northern lookout, a lakeside pier, and a southern walking loop. Paths bend between asymmetrical clearings. Trees and flowers form uneven clusters. A compact English HUD shows the area, controls, music toggle and return button.
 
 ![Mossmere village in Play mode](FINALS_SANDBOX/QA/01-village.png)
 
@@ -10,8 +10,9 @@ The supplied demo's house and tree assemblies become an island village with bran
 
 - **WASD / arrow keys:** walk.
 - **R:** return to the village spawn.
+- **M:** turn the original background music on or off.
 - **Escape:** quit the Windows game.
-- Walk into a pale stone surrounded by four white flowers at a trail endpoint to return home.
+- Walk into a glowing cyan ring labeled **RETURN TO SPAWN** at a trail endpoint to return home. The ring pulses and projects a light beam. Nearby guidance explains what it does.
 
 Return zones clear movement and angular velocity, restore the player collision and renderer layers, and recenter the camera. Controls remain briefly locked after returning to prevent a held key from carrying the player away immediately.
 
@@ -33,12 +34,18 @@ The original pack demo stays unchanged at `Assets/TopDown 2D RPG BE3/Demo/Demo.u
 
 The checks move the real Rigidbody2D player through the generated world, enter all four return zones, deliberately alter collision/rendering state, verify the reset, and traverse the southern loop. Test-only behaviour is compiled out of the Windows player.
 
-The completed Play mode run passed **47 checks**. See [the recorded results](FINALS_SANDBOX/QA/playcheck-result.txt) and the screenshots in the same folder. A separate opt-in `-sandboxSmoke` check validates the built Windows player; it is inactive during normal play.
+The revised game passed **53 Play mode checks**. See [the recorded results](FINALS_SANDBOX/QA/playcheck-result.txt) and the screenshots in the same folder. Checks include the English HUD buttons, audible music samples, glowing beacon visuals, actual traversal, and all return-state resets. A separate opt-in `-sandboxSmoke` check validates the built Windows player; it is inactive during normal play.
 
 Windows deliverables are packaged locally in `Deliverables`; the ZIP includes the executable, data directory, Unity player DLL, Mono runtime, and other emitted runtime files. Build binaries are not uploaded to GitHub.
 
-The verified local archive is `Deliverables/Mossmere-Windows-x64.zip` (39.3 MB, 184 files). Extract the entire folder, then run `Mossmere.exe`. The standalone player check and ZIP integrity checks passed; see `standalone-result.txt` and `package-result.json` in the QA folder.
+The revised local backup is `Deliverables/Mossmere-Windows-x64-v2.zip`. Extract the entire folder, then run `Mossmere.exe`. The original v1 ZIP remains available separately.
+
+For the Canvas instruction to use WinRAR to make an executable, submit **`Deliverables/Mossmere-Canvas-Submission.exe`**. This is a real WinRAR self-extracting archive containing the complete Windows game and its runtime folders. Open it, choose an extraction destination, and run `Mossmere-Windows-x64-v2/Mossmere.exe` from the extracted folder. The executable alone from Unity's build directory is not a complete portable submission. The packager tests archive integrity, compares every extracted file hash, and launches the extracted game for a standalone smoke check. Results are in `canvas-submission-result.json`.
+
+The submission executable is approximately **32.9 MB**; the ZIP backup is approximately **40.4 MB**. Both contain the complete 185-file game folder.
 
 ## Credits
 
 Art: **Goldmetal**, Top-Down 2D RPG Assets Pack v1.0, © 2021 Goldmetal. [Publisher](https://www.goldmetal.co.kr). Source sprites and demo are used at their original pixel-art scale with point filtering. Unity and its runtime remain subject to their respective licenses.
+
+Music: **Mossmere Meadow**, an original 40-second synthesized chiptune composition created for this activity. Source composition is in `tools/create_music.py`; the rendered stereo WAV is included in the Unity project.

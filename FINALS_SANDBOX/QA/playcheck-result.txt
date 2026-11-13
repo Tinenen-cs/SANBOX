@@ -1,6 +1,11 @@
 PASS
 PASS Player starts on Player collision layer
 PASS Imported player sprites assigned
+PASS English HUD and location visible
+PASS Looping background music is playing
+PASS Music contains audible samples
+PASS English music button toggles audio
+PASS Every return zone has a glow ring, beam and English label
 PASS Four return zones present
 PASS Reachable path to Lakeside pier
 PASS Reached expanded area Lakeside pier
@@ -46,4 +51,5 @@ PASS Southern loop route (17.00, -8.00)
 PASS Southern loop traversed in Play mode
 PASS Manual return clears residual motion
 PASS Manual return restores collision and rendering
-Completed: 2026-11-13T16:47:24.5790731+08:00
+PASS English HUD return button returns to spawn
+Completed: 2026-11-13T17:19:08.1639780+08:00
