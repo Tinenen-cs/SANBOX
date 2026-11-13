@@ -2,6 +2,8 @@
 
 A small top-down exploration game by Tinenen-cs, built with Goldmetal's **Top-Down 2D RPG Assets Pack** (Asset Store product 188718).
 
+The Windows game launches **full screen at the monitor's native resolution**, with no window title bar. This also overrides saved windowed settings from older builds. Escape quits the game.
+
 The supplied demo's house and tree assemblies become an island village with branching woodland trails, a flower meadow, a northern lookout, a lakeside pier, and a southern walking loop. Paths bend between asymmetrical clearings. Trees and flowers form uneven clusters. A compact English HUD shows the area, controls, music toggle and return button.
 
 ![Mossmere village in Play mode](FINALS_SANDBOX/QA/01-village.png)
@@ -42,9 +44,9 @@ The revised game passed **69 Play mode checks**. See [the recorded results](FINA
 
 Windows deliverables are packaged locally in `Deliverables`; the ZIP includes the executable, data directory, Unity player DLL, Mono runtime, and other emitted runtime files. Build binaries are not uploaded to GitHub.
 
-The latest local backup is `Deliverables/Mossmere-Windows-x64-v3.zip`. Extract the entire folder, then run `Mossmere.exe`. Previous builds remain available separately.
+The latest local backup is `Deliverables/Mossmere-Windows-x64-v4.zip`. Extract the entire folder, then run `Mossmere.exe`. Previous builds remain available separately.
 
-For the Canvas instruction to use WinRAR to make an executable, submit **`Deliverables/Mossmere-Canvas-Submission-v3.exe`**. This is a real WinRAR self-extracting archive containing the complete Windows game and its runtime folders. Open it, choose an extraction destination, and run `Mossmere-Windows-x64-v3/Mossmere.exe` from the extracted folder. Keep the game executable and all runtime folders together. The packager tests archive integrity, compares every extracted file hash, and launches the extracted game for a standalone smoke check. Results are in `canvas-submission-result.json`.
+For the Canvas instruction to use WinRAR to make an executable, submit **`Deliverables/Mossmere-Canvas-Submission-v4.exe`**. This is a real WinRAR self-extracting archive containing the complete Windows game and its runtime folders. Open it, choose an extraction destination, and run `Mossmere-Windows-x64-v4/Mossmere.exe` from the extracted folder. Keep the game executable and all runtime folders together. The packager tests archive integrity, compares every extracted file hash, and launches the extracted game for a standalone smoke check, including fullscreen mode and native monitor resolution. Results are in `canvas-submission-result.json` and `fullscreen-result.txt`.
 
 The submission executable is approximately **32.9 MB**; the ZIP backup is approximately **40.4 MB**. Both contain the complete 185-file game folder.
 

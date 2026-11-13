@@ -53,6 +53,12 @@ namespace Mossmere
             catch(Exception e){File.WriteAllText(Path.Combine(output,"standalone-result.txt"),"FAIL: dialogue render: "+e);Application.Quit(1);yield break;}
             player.ReturnToSpawn();yield return new WaitForSecondsRealtime(.3f);
             ok=ok && !hud.DialogueVisible;
+            if(args.Contains("-verifyFullscreen"))
+            {
+                bool full=Screen.fullScreenMode==FullScreenMode.FullScreenWindow && Screen.width==Display.main.systemWidth && Screen.height==Display.main.systemHeight;
+                ok=ok && full;
+                File.WriteAllText(Path.Combine(output,"fullscreen-result.txt"),(full?"PASS":"FAIL")+": "+Screen.fullScreenMode+", game "+Screen.width+"x"+Screen.height+", monitor "+Display.main.systemWidth+"x"+Display.main.systemHeight);
+            }
             try
             {
                 SaveCapture(player.follow.GetComponent<Camera>(),Path.Combine(output,"standalone-spawn.png"));
@@ -64,10 +70,11 @@ namespace Mossmere
         }
         static void SaveCapture(Camera camera,string path)
         {
-            var target=RenderTexture.GetTemporary(1280,720,24);
+            int width=Screen.width,height=Screen.height;
+            var target=RenderTexture.GetTemporary(width,height,24);
             UnityEngine.Rendering.RenderPipeline.SubmitRenderRequest(camera,new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest {destination=target});
             var previous=RenderTexture.active;RenderTexture.active=target;
-            var texture=new Texture2D(1280,720,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,1280,720),0,0);texture.Apply();
+            var texture=new Texture2D(width,height,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();
             File.WriteAllBytes(path,texture.EncodeToPNG());
             RenderTexture.active=previous;Destroy(texture);RenderTexture.ReleaseTemporary(target);
         }

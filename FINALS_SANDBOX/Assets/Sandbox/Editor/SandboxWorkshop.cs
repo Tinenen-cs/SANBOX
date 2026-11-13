@@ -163,9 +163,9 @@ public static class SandboxWorkshop
         player.AddComponent<SandboxPlayCheck>();
         ConfigureLayers();
         PlayerSettings.companyName="Tinenen-cs"; PlayerSettings.productName="Mossmere";
-        PlayerSettings.bundleVersion="1.2.0";
+        PlayerSettings.bundleVersion="1.3.0";
         PlayerSettings.defaultScreenWidth=1280; PlayerSettings.defaultScreenHeight=720;
-        PlayerSettings.fullScreenMode=FullScreenMode.Windowed; PlayerSettings.runInBackground=true;
+        PlayerSettings.fullScreenMode=FullScreenMode.FullScreenWindow; PlayerSettings.defaultIsNativeResolution=true; PlayerSettings.runInBackground=true;
         PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Standalone,ScriptingImplementation.Mono2x);
         EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(),Scene);
         EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(Scene,true)};
@@ -264,8 +264,10 @@ public static class SandboxWorkshop
     [MenuItem("Mossmere/Build Windows x64")]
     public static void Build()
     {
-        PlayerSettings.bundleVersion="1.2.0";
-        string output=Path.GetFullPath(Path.Combine(Root,"../Deliverables/Mossmere-Windows-x64-v3/Mossmere.exe"));
+        PlayerSettings.bundleVersion="1.3.0";
+        PlayerSettings.fullScreenMode=FullScreenMode.FullScreenWindow;
+        PlayerSettings.defaultIsNativeResolution=true;
+        string output=Path.GetFullPath(Path.Combine(Root,"../Deliverables/Mossmere-Windows-x64-v4/Mossmere.exe"));
         Directory.CreateDirectory(Path.GetDirectoryName(output));
         var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {scenes=new[]{Scene},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
         File.WriteAllText(Path.Combine(Root,"QA/build-result.txt"),report.summary.result+"\nErrors: "+report.summary.totalErrors+"\nBytes: "+report.summary.totalSize+"\nTime: "+report.summary.totalTime);

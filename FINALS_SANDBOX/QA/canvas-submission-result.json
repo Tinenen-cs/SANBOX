@@ -1,11 +1,12 @@
 {
   "result": "PASS",
-  "submission": "Deliverables/Mossmere-Canvas-Submission-v3.exe",
+  "submission": "Deliverables/Mossmere-Canvas-Submission-v4.exe",
   "format": "WinRAR self-extracting Windows executable (SFX)",
-  "bytes": 32879936,
+  "bytes": 32879457,
   "files_verified": 185,
-  "sha256": "deb2cc4aa170222cf33f35f8e8337f20ee7cd8bb156fd0e98619eab807d4451b",
+  "sha256": "a9d96fe1f7fd1a380e314088cc8aebfd8431d4613a159de0d1ae69f2977fd4f3",
   "archive_integrity": "PASS",
   "extracted_file_hashes": "PASS",
-  "extracted_game_launch": "PASS"
+  "extracted_game_launch": "PASS",
+  "native_fullscreen": "PASS"
 }

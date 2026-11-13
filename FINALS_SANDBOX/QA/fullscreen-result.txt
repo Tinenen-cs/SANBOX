@@ -1,0 +1,1 @@
+PASS: FullScreenWindow, game 1920x1080, monitor 1920x1080

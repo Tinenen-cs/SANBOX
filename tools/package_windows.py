@@ -8,16 +8,17 @@ from pathlib import Path
 import zipfile
 
 root = Path(__file__).resolve().parents[1]
-game = root / "Deliverables" / "Mossmere-Windows-x64-v3"
+game = root / "Deliverables" / "Mossmere-Windows-x64-v4"
 qa = root / "FINALS_SANDBOX" / "QA"
 assert (qa / "playcheck-result.txt").read_text().startswith("PASS\n"), "Play mode tests must pass"
 assert (qa / "build-result.txt").read_text().startswith("Succeeded"), "Windows build must pass"
 assert (qa / "standalone-result.txt").read_text().startswith("PASS"), "Standalone check must pass"
 assert "English HUD" in (qa / "standalone-result.txt").read_text(), "The revised player must be checked"
 assert "villager greetings" in (qa / "standalone-result.txt").read_text(), "The dialogue update must be checked"
+assert (qa / "fullscreen-result.txt").read_text().startswith("PASS"), "Native fullscreen display check must pass"
 diagnostics=game/"Mossmere_BurstDebugInformation_DoNotShip"
 if diagnostics.exists():
-    destination=game.parent/f"Mossmere-BuildDiagnostics-v3-{time.time_ns()}"
+    destination=game.parent/f"Mossmere-BuildDiagnostics-v4-{time.time_ns()}"
     assert diagnostics.resolve().is_relative_to(game.parent.resolve())
     assert destination.resolve().is_relative_to(game.parent.resolve())
     shutil.move(str(diagnostics),str(destination))
@@ -25,6 +26,7 @@ if diagnostics.exists():
 (game / "READ-ME.txt").write_text(
     "MOSSMERE\n\n"
     "Extract this entire folder before starting Mossmere.exe. Keep all files and folders together.\n\n"
+    "The game opens full screen at your monitor's native resolution.\n\n"
     "WASD or arrow keys: walk\nR or Return to Spawn button: return to village spawn\nM or Music button: toggle background music\nE or Next button: next villager dialogue\nEscape: quit\n\n"
     "Walk into a glowing cyan ring to return home. Nearby HUD guidance explains the beacon.\n"
     "Approach villagers to hear greetings and local stories. Walk away to close the conversation.\n"
