@@ -11,10 +11,14 @@ The supplied demo's house and tree assemblies become an island village with bran
 - **WASD / arrow keys:** walk.
 - **R:** return to the village spawn.
 - **M:** turn the original background music on or off.
+- **E / Next button:** advance a nearby villager's dialogue.
 - **Escape:** quit the Windows game.
-- Walk into a glowing cyan ring labeled **RETURN TO SPAWN** at a trail endpoint to return home. The ring pulses and projects a light beam. Nearby guidance explains what it does.
+- Walk into a glowing cyan ring at a trail endpoint to return home. The ring pulses with a short, soft light beam. Nearby HUD guidance explains what it does; there is no floating label above the ring.
+- Approach **Mira**, **Fern**, or **Rowan** for an automatic greeting and a short story about Mossmere. Walk away to close the conversation. Dialogue never pauses movement.
 
 Return zones clear movement and angular velocity, restore the player collision and renderer layers, and recenter the camera. Controls remain briefly locked after returning to prevent a held key from carrying the player away immediately.
+
+![Mira greets the player near the village](FINALS_SANDBOX/QA/dialogue-Mira.png)
 
 ## Open the project
 
@@ -34,13 +38,13 @@ The original pack demo stays unchanged at `Assets/TopDown 2D RPG BE3/Demo/Demo.u
 
 The checks move the real Rigidbody2D player through the generated world, enter all four return zones, deliberately alter collision/rendering state, verify the reset, and traverse the southern loop. Test-only behaviour is compiled out of the Windows player.
 
-The revised game passed **53 Play mode checks**. See [the recorded results](FINALS_SANDBOX/QA/playcheck-result.txt) and the screenshots in the same folder. Checks include the English HUD buttons, audible music samples, glowing beacon visuals, actual traversal, and all return-state resets. A separate opt-in `-sandboxSmoke` check validates the built Windows player; it is inactive during normal play.
+The revised game passed **69 Play mode checks**. See [the recorded results](FINALS_SANDBOX/QA/playcheck-result.txt) and the screenshots in the same folder. Checks include walking to all three villagers, automatic greetings, advancing each story, walking away to dismiss dialogue, English HUD buttons, audible music samples, subtle beacon visuals without floating text, actual traversal, and all return-state resets. A separate opt-in `-sandboxSmoke` check validates the built Windows player; it is inactive during normal play.
 
 Windows deliverables are packaged locally in `Deliverables`; the ZIP includes the executable, data directory, Unity player DLL, Mono runtime, and other emitted runtime files. Build binaries are not uploaded to GitHub.
 
-The revised local backup is `Deliverables/Mossmere-Windows-x64-v2.zip`. Extract the entire folder, then run `Mossmere.exe`. The original v1 ZIP remains available separately.
+The latest local backup is `Deliverables/Mossmere-Windows-x64-v3.zip`. Extract the entire folder, then run `Mossmere.exe`. Previous builds remain available separately.
 
-For the Canvas instruction to use WinRAR to make an executable, submit **`Deliverables/Mossmere-Canvas-Submission.exe`**. This is a real WinRAR self-extracting archive containing the complete Windows game and its runtime folders. Open it, choose an extraction destination, and run `Mossmere-Windows-x64-v2/Mossmere.exe` from the extracted folder. The executable alone from Unity's build directory is not a complete portable submission. The packager tests archive integrity, compares every extracted file hash, and launches the extracted game for a standalone smoke check. Results are in `canvas-submission-result.json`.
+For the Canvas instruction to use WinRAR to make an executable, submit **`Deliverables/Mossmere-Canvas-Submission-v3.exe`**. This is a real WinRAR self-extracting archive containing the complete Windows game and its runtime folders. Open it, choose an extraction destination, and run `Mossmere-Windows-x64-v3/Mossmere.exe` from the extracted folder. Keep the game executable and all runtime folders together. The packager tests archive integrity, compares every extracted file hash, and launches the extracted game for a standalone smoke check. Results are in `canvas-submission-result.json`.
 
 The submission executable is approximately **32.9 MB**; the ZIP backup is approximately **40.4 MB**. Both contain the complete 185-file game folder.
 

@@ -1,1 +1,1 @@
-PASS: Windows x64 player loads expanded scene, English HUD, original background music and four glowing return beacons; trigger restores spawn, movement and layers.
+PASS: Windows x64 player loads the English HUD, original music, subtle return beacons and three villager greetings; proximity dialogue opens and return-to-spawn clears it while restoring movement and layers.

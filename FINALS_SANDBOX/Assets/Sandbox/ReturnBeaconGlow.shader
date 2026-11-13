@@ -32,7 +32,7 @@ Shader "Mossmere/ReturnBeaconGlow"
                 float soft=(1-smoothstep(.05,1,radius))*.13;
                 float ring=(1-smoothstep(.025,.09,abs(radius-(.67+.04*sin(_Time.y*2)))))*.85;
                 float inner=(1-smoothstep(.02,.055,abs(radius-.39)))*.5;
-                float column=pow(saturate(1-abs(uv.x-.5)*2),3)*pow(saturate(1-uv.y),.65)*.48;
+                float column=pow(saturate(1-abs(uv.x-.5)*2),3)*pow(saturate(1-uv.y),.65)*.22;
                 float alpha=lerp((soft+ring+inner)*pulse,column*pulse,step(.5,_Beam));
                 return half4(_Color.rgb,alpha*_Color.a);
             }

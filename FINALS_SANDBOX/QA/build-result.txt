@@ -1,4 +1,4 @@
 Succeeded
 Errors: 0
-Bytes: 105391232
-Time: 00:00:34.2812154
+Bytes: 105389808
+Time: 00:00:31.1613936

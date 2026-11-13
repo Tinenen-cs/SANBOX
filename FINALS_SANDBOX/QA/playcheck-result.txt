@@ -5,7 +5,23 @@ PASS English HUD and location visible
 PASS Looping background music is playing
 PASS Music contains audible samples
 PASS English music button toggles audio
-PASS Every return zone has a glow ring, beam and English label
+PASS Return zones retain glow rings and subtle beams without floating text
+PASS Three villagers have individual English greetings and stories
+PASS Approach Fern - Woodland Keeper: reachable walking path
+PASS Fern - Woodland Keeper: greeting appears automatically nearby
+PASS Fern - Woodland Keeper: next dialogue advances the story
+PASS Leave Fern - Woodland Keeper: reachable walking path
+PASS Fern - Woodland Keeper: dialogue closes after walking away
+PASS Approach Mira - Village Guide: reachable walking path
+PASS Mira - Village Guide: greeting appears automatically nearby
+PASS Mira - Village Guide: next dialogue advances the story
+PASS Leave Mira - Village Guide: reachable walking path
+PASS Mira - Village Guide: dialogue closes after walking away
+PASS Approach Rowan - Lake Watcher: reachable walking path
+PASS Rowan - Lake Watcher: greeting appears automatically nearby
+PASS Rowan - Lake Watcher: next dialogue advances the story
+PASS Leave Rowan - Lake Watcher: reachable walking path
+PASS Rowan - Lake Watcher: dialogue closes after walking away
 PASS Four return zones present
 PASS Reachable path to Lakeside pier
 PASS Reached expanded area Lakeside pier
@@ -52,4 +68,4 @@ PASS Southern loop traversed in Play mode
 PASS Manual return clears residual motion
 PASS Manual return restores collision and rendering
 PASS English HUD return button returns to spawn
-Completed: 2026-11-13T17:19:08.1639780+08:00
+Completed: 2026-11-13T18:24:13.9187156+08:00

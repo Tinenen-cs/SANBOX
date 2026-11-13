@@ -163,14 +163,14 @@ public static class SandboxWorkshop
         player.AddComponent<SandboxPlayCheck>();
         ConfigureLayers();
         PlayerSettings.companyName="Tinenen-cs"; PlayerSettings.productName="Mossmere";
-        PlayerSettings.bundleVersion="1.1.0";
+        PlayerSettings.bundleVersion="1.2.0";
         PlayerSettings.defaultScreenWidth=1280; PlayerSettings.defaultScreenHeight=720;
         PlayerSettings.fullScreenMode=FullScreenMode.Windowed; PlayerSettings.runInBackground=true;
         PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Standalone,ScriptingImplementation.Mono2x);
         EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(),Scene);
         EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(Scene,true)};
         AssetDatabase.SaveAssets();
-        File.WriteAllText(Path.Combine(Root,"QA/asset-inspection.txt"),"Goldmetal Top-Down 2D RPG Assets Pack; product ID 188718; version 1.0.\nImported path: "+Pack+"\nSource demo: "+Pack+"Demo/Demo.unity\nExpanded scene: "+Scene+"\nOriginal demo retained unchanged; original assemblies retained disabled in expanded scene.\nTerrain uses source sprite tiles. Four connected branches plus southern loop, four return zones. Compact English HUD, original background music and glowing labeled return beacons.\nTrees placed: "+treePositions.Count);
+        File.WriteAllText(Path.Combine(Root,"QA/asset-inspection.txt"),"Goldmetal Top-Down 2D RPG Assets Pack; product ID 188718; version 1.0.\nImported path: "+Pack+"\nSource demo: "+Pack+"Demo/Demo.unity\nExpanded scene: "+Scene+"\nOriginal demo retained unchanged; original assemblies retained disabled in expanded scene.\nTerrain uses source sprite tiles. Four connected branches plus southern loop, four return zones. English HUD, original music, subtle return rings without floating labels, and three villagers with proximity greetings and stories.\nTrees placed: "+treePositions.Count);
     }
     static Tilemap Map(Grid grid,string name,int order)
     {
@@ -226,6 +226,23 @@ public static class SandboxWorkshop
     {
         var all=sprites.Where(kv=>kv.Key.StartsWith("NPC/")).Select(kv=>kv.Value).ToArray();
         var o=new GameObject("Villager");o.transform.SetParent(parent);o.transform.position=p;var r=o.AddComponent<SpriteRenderer>();r.sharedMaterial=material;r.sprite=all[index%all.Length];r.sortingOrder=1000-Mathf.RoundToInt((p.y-.3f)*16);
+        var dialogue=o.AddComponent<VillagerDialogue>();
+        if(p.x< -10)
+        {
+            dialogue.characterName="Fern - Woodland Keeper";
+            dialogue.lines=new[]{"Good day! I'm Fern. I look after this little woodland cottage.","The forest grows close around these paths, but every trail has a quiet place worth finding.","If you lose your way, look for a glowing ring. It will bring you safely back to the village."};
+        }
+        else if(p.x>10)
+        {
+            dialogue.characterName="Rowan - Lake Watcher";
+            dialogue.lines=new[]{"Hello there! I'm Rowan. The lake is wonderfully peaceful today.","I come here to listen to the water and watch travelers discover the island.","That light by the pier is a return beacon. It leads home, so you can keep exploring without worry."};
+        }
+        else
+        {
+            dialogue.characterName="Mira - Village Guide";
+            dialogue.lines=new[]{"Hello, traveler! Welcome to Mossmere. Take your time and make yourself at home.","These paths connect our village to the meadow, woodland cottage and lakeside pier.","The glowing rings were left by the island's pathkeepers. Step into one whenever you want to come back home."};
+        }
+        o.name=dialogue.characterName;
     }
     static void Zone(Transform parent,string name,Vector2 p)
     {
@@ -247,8 +264,8 @@ public static class SandboxWorkshop
     [MenuItem("Mossmere/Build Windows x64")]
     public static void Build()
     {
-        PlayerSettings.bundleVersion="1.1.0";
-        string output=Path.GetFullPath(Path.Combine(Root,"../Deliverables/Mossmere-Windows-x64-v2/Mossmere.exe"));
+        PlayerSettings.bundleVersion="1.2.0";
+        string output=Path.GetFullPath(Path.Combine(Root,"../Deliverables/Mossmere-Windows-x64-v3/Mossmere.exe"));
         Directory.CreateDirectory(Path.GetDirectoryName(output));
         var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {scenes=new[]{Scene},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
         File.WriteAllText(Path.Combine(Root,"QA/build-result.txt"),report.summary.result+"\nErrors: "+report.summary.totalErrors+"\nBytes: "+report.summary.totalSize+"\nTime: "+report.summary.totalTime);

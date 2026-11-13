@@ -15,12 +15,19 @@ namespace Mossmere
         public Button HomeButton { get; private set; }
         public Button MusicButton { get; private set; }
         public Canvas HudCanvas { get; private set; }
+        public VillagerDialogue ActiveVillager { get; private set; }
+        public Text DialogueText { get; private set; }
+        public bool DialogueVisible => dialoguePanel!=null && dialoguePanel.activeSelf;
         Font font;
         Text toast;
         GameObject hint;
         int lastReturns;
         float toastUntil;
         ReturnZone[] zones;
+        VillagerDialogue[] villagers;
+        GameObject dialoguePanel;
+        Text speaker;
+        int dialogueIndex;
         readonly Color ink = new(.055f,.12f,.14f,.95f);
         readonly Color cream = new(.97f,.96f,.86f,1);
 
@@ -47,7 +54,7 @@ namespace Mossmere
             MusicText=MusicButton.GetComponentInChildren<Text>();MusicButton.onClick.AddListener(ToggleMusic);
             var controls=Panel(root.transform,"Controls",Vector2.zero,new Vector2(24,24),new Vector2(610,66));
             Label(controls,"WASD / Arrow keys: Move     R: Return to spawn",new Vector2(14,-8),new Vector2(582,24),16);
-            Label(controls,"M: Music on/off     Esc: Quit     Explore the island at your own pace.",new Vector2(14,-34),new Vector2(582,24),15);
+            Label(controls,"E: Next dialogue     M: Music on/off     Esc: Quit",new Vector2(14,-34),new Vector2(582,24),15);
             var notice=Panel(root.transform,"Return notice",new Vector2(.5f,1),new Vector2(0,-24),new Vector2(330,42));
             toast=Label(notice,"Returned to village spawn",new Vector2(10,-7),new Vector2(310,28),17,FontStyle.Bold);toast.alignment=TextAnchor.MiddleCenter;
             notice.gameObject.SetActive(false);
@@ -55,7 +62,15 @@ namespace Mossmere
             Label(context,"RETURN BEACON",new Vector2(14,-7),new Vector2(354,24),17,FontStyle.Bold);
             Label(context,"Walk into the glowing ring to return to spawn.",new Vector2(14,-34),new Vector2(354,24),15);
             hint=context.gameObject;hint.SetActive(false);
+            var conversation=Panel(root.transform,"Villager conversation",new Vector2(.5f,0),new Vector2(0,106),new Vector2(680,152));
+            speaker=Label(conversation,"Villager",new Vector2(18,-10),new Vector2(644,26),20,FontStyle.Bold);
+            DialogueText=Label(conversation,"",new Vector2(18,-43),new Vector2(644,62),17);
+            DialogueText.alignment=TextAnchor.UpperLeft;
+            Label(conversation,"Walk away to close",new Vector2(18,-119),new Vector2(470,22),14);
+            var next=MakeButton(conversation,"Next [E]",new Vector2(-14,10),new Vector2(112,36),new Vector2(1,0));next.onClick.AddListener(AdvanceDialogue);
+            dialoguePanel=conversation.gameObject;dialoguePanel.SetActive(false);
             zones=FindObjectsByType<ReturnZone>(FindObjectsSortMode.None);
+            villagers=FindObjectsByType<VillagerDialogue>(FindObjectsSortMode.None);
             lastReturns=player.returns;
         }
         void Update()
@@ -65,11 +80,36 @@ namespace Mossmere
             AreaText.text=p.y>12?(p.x< -14?"Woodland Cottage":"Northern Lookout"):(p.x< -16?"West Meadow":(p.x>14?"Lakeside Pier":(p.y< -11?"Southern Trail":"Village")));
             if(Keyboard.current!=null && Keyboard.current.mKey.wasPressedThisFrame)ToggleMusic();
             MusicText.text=music!=null && !music.mute?"Music: On [M]":"Music: Off [M]";
-            if(lastReturns!=player.returns){lastReturns=player.returns;toastUntil=Time.unscaledTime+2.2f;}
+            if(lastReturns!=player.returns){lastReturns=player.returns;toastUntil=Time.unscaledTime+2.2f;CloseDialogue();}
             toast.transform.parent.gameObject.SetActive(Time.unscaledTime<toastUntil);
             bool near=false;foreach(var zone in zones)if(Vector2.Distance(p,zone.transform.position)<4.3f){near=true;break;}
             hint.SetActive(near);
+            UpdateDialogue(p);
         }
+        void UpdateDialogue(Vector2 position)
+        {
+            if(ActiveVillager!=null && Vector2.Distance(position,ActiveVillager.transform.position)>ActiveVillager.greetingRadius+.45f)CloseDialogue();
+            if(ActiveVillager==null)
+            {
+                VillagerDialogue nearest=null;float best=float.MaxValue;
+                foreach(var villager in villagers)
+                {
+                    float distance=Vector2.Distance(position,villager.transform.position);
+                    if(distance<=villager.greetingRadius && distance<best && villager.lines!=null && villager.lines.Length>0){nearest=villager;best=distance;}
+                }
+                if(nearest!=null)
+                {
+                    ActiveVillager=nearest;dialogueIndex=0;speaker.text=nearest.characterName;DialogueText.text=nearest.lines[0];dialoguePanel.SetActive(true);
+                }
+            }
+            if(ActiveVillager!=null && Keyboard.current!=null && Keyboard.current.eKey.wasPressedThisFrame)AdvanceDialogue();
+        }
+        public void AdvanceDialogue()
+        {
+            if(ActiveVillager==null || ActiveVillager.lines==null || ActiveVillager.lines.Length==0)return;
+            dialogueIndex=(dialogueIndex+1)%ActiveVillager.lines.Length;DialogueText.text=ActiveVillager.lines[dialogueIndex];
+        }
+        void CloseDialogue(){ActiveVillager=null;dialogueIndex=0;if(dialoguePanel!=null)dialoguePanel.SetActive(false);}
         public void ToggleMusic(){if(music!=null)music.mute=!music.mute;}
         RectTransform Panel(Transform parent,string name,Vector2 anchor,Vector2 position,Vector2 size)
         {
@@ -88,9 +128,9 @@ namespace Mossmere
             var text=o.GetComponent<Text>();text.font=font;text.text=value;text.fontSize=fontSize;text.fontStyle=style;text.color=cream;text.raycastTarget=false;text.alignment=TextAnchor.MiddleLeft;
             return text;
         }
-        Button MakeButton(Transform parent,string value,Vector2 position,Vector2 size)
+        Button MakeButton(Transform parent,string value,Vector2 position,Vector2 size,Vector2? anchor=null)
         {
-            var rect=Panel(parent,value,Vector2.one,position,size);
+            var rect=Panel(parent,value,anchor??Vector2.one,position,size);
             var image=rect.GetComponent<Image>();image.raycastTarget=true;
             var button=rect.gameObject.AddComponent<Button>();button.targetGraphic=image;
             var colors=button.colors;colors.highlightedColor=new Color(.48f,.82f,.78f);colors.pressedColor=new Color(.3f,.66f,.61f);button.colors=colors;

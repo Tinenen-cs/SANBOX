@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Mossmere
 {
@@ -12,17 +11,7 @@ namespace Mossmere
         {
             if(transform.Find("Glowing return ring")!=null)return;
             ring=Quad("Glowing return ring",Vector3.zero,new Vector3(3.3f,3.3f,1),false);
-            beam=Quad("Beacon light column",new Vector3(0,1.1f,0),new Vector3(.85f,2.8f,1),true);
-            var sign=new GameObject("RETURN TO SPAWN label",typeof(RectTransform),typeof(Canvas));
-            sign.transform.SetParent(transform,false);sign.transform.localPosition=new Vector3(0,2.7f,0);sign.transform.localScale=Vector3.one*.012f;
-            var canvas=sign.GetComponent<Canvas>();canvas.renderMode=RenderMode.WorldSpace;canvas.overrideSorting=true;canvas.sortingOrder=3300;
-            sign.GetComponent<RectTransform>().sizeDelta=new Vector2(300,42);
-            var background=new GameObject("Sign background",typeof(RectTransform),typeof(Image));background.transform.SetParent(sign.transform,false);
-            var rect=background.GetComponent<RectTransform>();rect.anchorMin=Vector2.zero;rect.anchorMax=Vector2.one;rect.sizeDelta=Vector2.zero;
-            background.GetComponent<Image>().color=new Color(.03f,.13f,.17f,.94f);background.GetComponent<Image>().raycastTarget=false;
-            var label=new GameObject("English label",typeof(RectTransform),typeof(Text));label.transform.SetParent(sign.transform,false);
-            rect=label.GetComponent<RectTransform>();rect.anchorMin=Vector2.zero;rect.anchorMax=Vector2.one;rect.sizeDelta=Vector2.zero;
-            var text=label.GetComponent<Text>();text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");text.fontSize=26;text.fontStyle=FontStyle.Bold;text.alignment=TextAnchor.MiddleCenter;text.text="RETURN TO SPAWN";text.color=new Color(.68f,1,.94f);text.raycastTarget=false;
+            beam=Quad("Beacon light column",new Vector3(0,.75f,0),new Vector3(.65f,1.9f,1),true);
         }
         Transform Quad(string name,Vector3 position,Vector3 scale,bool column)
         {

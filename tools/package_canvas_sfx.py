@@ -7,21 +7,21 @@ import subprocess
 
 root=Path(__file__).resolve().parents[1]
 deliverables=root/"Deliverables"
-game=deliverables/"Mossmere-Windows-x64-v2"
+game=deliverables/"Mossmere-Windows-x64-v3"
 qa=root/"FINALS_SANDBOX/QA"
 rar=Path(os.environ.get("ProgramFiles",r"C:\Program Files"))/"WinRAR/Rar.exe"
 assert rar.is_file(), "WinRAR is required to create the submission executable"
 package=json.loads((qa/"package-result.json").read_text())
 assert package["result"]=="PASS" and package["zip"].endswith(game.name+".zip")
-archive=deliverables/"Mossmere-Canvas-Submission.exe"
-comment=deliverables/"Mossmere-SFX-Readme.txt"
+archive=deliverables/"Mossmere-Canvas-Submission-v3.exe"
+comment=deliverables/"Mossmere-SFX-Readme-v3.txt"
 comment.write_text(
     "MOSSMERE - WINDOWS GAME\n\n"
     "This self-extracting archive contains the complete Windows x64 game.\n"
     "Choose a destination and extract all files. Then open\n"
-    "Mossmere-Windows-x64-v2\\Mossmere.exe.\n\n"
+    "Mossmere-Windows-x64-v3\\Mossmere.exe.\n\n"
     "WASD / arrows: Move | R: Return to spawn | M: Music on/off | Esc: Quit\n"
-    "Glowing rings labeled RETURN TO SPAWN return the player to the village.\n",
+    "Glowing rings return you to the village. Approach villagers for greetings; E advances the story.\n",
     encoding="utf-8",
 )
 
@@ -35,7 +35,7 @@ def run(args,cwd=deliverables,timeout=180):
 run([rar,"a","-r","-m5","-sfx","-t","-y",f"-z{comment}",archive,game.name])
 assert archive.read_bytes()[:2]==b"MZ", "Submission must be a Windows executable, not a renamed ZIP"
 run([rar,"t","-idq",archive])
-extract=deliverables/"SFX-Extraction-Check"
+extract=deliverables/"SFX-Extraction-Check-v3"
 extract.mkdir(exist_ok=True)
 assert extract.resolve().is_relative_to(deliverables.resolve())
 run([rar,"x","-y","-idq",archive,str(extract)+os.sep])

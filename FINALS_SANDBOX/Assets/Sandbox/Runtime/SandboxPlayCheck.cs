@@ -57,8 +57,27 @@ namespace Mossmere
             var audioData=new float[8192];hud.music.clip.GetData(audioData,4410);
             Check(audioData.Any(value=>Mathf.Abs(value)>.001f),"Music contains audible samples");
             bool wasMuted=hud.music.mute;hud.MusicButton.onClick.Invoke();Check(hud.music.mute!=wasMuted,"English music button toggles audio");hud.MusicButton.onClick.Invoke();
-            Check(FindObjectsByType<ReturnBeacon>(FindObjectsSortMode.None).All(b=>b.transform.Find("Glowing return ring")!=null && b.transform.Find("RETURN TO SPAWN label")!=null),"Every return zone has a glow ring, beam and English label");
+            Check(FindObjectsByType<ReturnBeacon>(FindObjectsSortMode.None).All(b=>b.transform.Find("Glowing return ring")!=null && b.transform.Find("Beacon light column")!=null && b.transform.Find("RETURN TO SPAWN label")==null),"Return zones retain glow rings and subtle beams without floating text");
             yield return Capture("01-village");
+
+            var villagers=FindObjectsByType<VillagerDialogue>(FindObjectsSortMode.None).OrderBy(v=>v.characterName).ToArray();
+            Check(villagers.Length==3,"Three villagers have individual English greetings and stories");
+            foreach(var villager in villagers)
+            {
+                player.ReturnToSpawn();yield return new WaitForSecondsRealtime(.3f);
+                Vector2 approach=(Vector2)villager.transform.position+Vector2.down*1.2f;
+                var walk=WalkTo(approach,"Approach "+villager.characterName);
+                while(walk.MoveNext())yield return walk.Current;
+                yield return new WaitForSecondsRealtime(.2f);
+                Check(hud.DialogueVisible && hud.ActiveVillager==villager && hud.DialogueText.text==villager.lines[0],villager.characterName+": greeting appears automatically nearby");
+                yield return Capture("dialogue-"+villager.characterName.Split(' ')[0]);
+                hud.AdvanceDialogue();
+                Check(hud.DialogueText.text==villager.lines[1],villager.characterName+": next dialogue advances the story");
+                walk=WalkTo(approach+Vector2.down*2.4f,"Leave "+villager.characterName);
+                while(walk.MoveNext())yield return walk.Current;
+                yield return new WaitForSecondsRealtime(.2f);
+                Check(!hud.DialogueVisible,villager.characterName+": dialogue closes after walking away");
+            }
 
             var zones=FindObjectsByType<ReturnZone>(FindObjectsSortMode.None).OrderBy(z=>z.name).ToArray();
             Check(zones.Length==4,"Four return zones present");
@@ -136,6 +155,20 @@ namespace Mossmere
         {
             if(!condition)throw new Exception(label);
             checks.Add("PASS "+label);File.WriteAllText(Path.Combine(qa,"playcheck-progress.txt"),string.Join("\n",checks));
+        }
+        IEnumerator WalkTo(Vector2 point,string label)
+        {
+            var path=FindPath(player.Body.position,point);Check(path!=null,label+": reachable walking path");
+            int waypoint=0;float deadline=Time.time+100;
+            while(Vector2.Distance(player.Body.position,point)>.15f)
+            {
+                if(Time.time>deadline)throw new Exception(label+": walking timed out at "+player.Body.position);
+                if(waypoint<path.Count-1 && Vector2.Distance(player.Body.position,path[waypoint])<.17f)waypoint++;
+                Vector2 delta=path[waypoint]-player.Body.position;
+                player.testInput=delta.normalized*Mathf.Min(1,delta.magnitude/.22f);
+                yield return null;
+            }
+            player.testInput=Vector2.zero;
         }
         IEnumerator Capture(string name)
         {

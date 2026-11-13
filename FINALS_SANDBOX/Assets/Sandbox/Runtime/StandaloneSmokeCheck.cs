@@ -39,19 +39,37 @@ namespace Mossmere
             Physics2D.SyncTransforms();
             yield return new WaitForSecondsRealtime(.4f);
             ok=Vector2.Distance(player.Body.position,player.spawn)<.02f && player.gameObject.layer==9 && visual.renderingLayerMask==rendering && player.Body.linearVelocity.sqrMagnitude<.001f;
+            var villagers=FindObjectsByType<VillagerDialogue>(FindObjectsSortMode.None);
+            var guide=villagers.FirstOrDefault(v=>v.characterName.StartsWith("Mira"));
+            if(villagers.Length!=3 || guide==null)
+            {
+                File.WriteAllText(Path.Combine(output,"standalone-result.txt"),"FAIL: missing villager dialogue");Application.Quit(1);yield break;
+            }
+            Vector2 approach=(Vector2)guide.transform.position+Vector2.down*1.2f;
+            player.Body.position=approach;player.transform.position=approach;Physics2D.SyncTransforms();
+            yield return new WaitForSecondsRealtime(.3f);
+            ok=ok && hud.DialogueVisible && hud.ActiveVillager==guide && hud.DialogueText.text==guide.lines[0];
+            try{SaveCapture(player.follow.GetComponent<Camera>(),Path.Combine(output,"standalone-dialogue.png"));}
+            catch(Exception e){File.WriteAllText(Path.Combine(output,"standalone-result.txt"),"FAIL: dialogue render: "+e);Application.Quit(1);yield break;}
+            player.ReturnToSpawn();yield return new WaitForSecondsRealtime(.3f);
+            ok=ok && !hud.DialogueVisible;
             try
             {
-                var target=RenderTexture.GetTemporary(1280,720,24);
-                UnityEngine.Rendering.RenderPipeline.SubmitRenderRequest(player.follow.GetComponent<Camera>(),new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest {destination=target});
-                var previous=RenderTexture.active;RenderTexture.active=target;
-                var texture=new Texture2D(1280,720,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,1280,720),0,0);texture.Apply();
-                File.WriteAllBytes(Path.Combine(output,"standalone-spawn.png"),texture.EncodeToPNG());
-                RenderTexture.active=previous;Destroy(texture);RenderTexture.ReleaseTemporary(target);
-                result=ok?"PASS: Windows x64 player loads expanded scene, English HUD, original background music and four glowing return beacons; trigger restores spawn, movement and layers.":"FAIL: standalone return state";
+                SaveCapture(player.follow.GetComponent<Camera>(),Path.Combine(output,"standalone-spawn.png"));
+                result=ok?"PASS: Windows x64 player loads the English HUD, original music, subtle return beacons and three villager greetings; proximity dialogue opens and return-to-spawn clears it while restoring movement and layers.":"FAIL: standalone return or villager dialogue state";
             }
             catch(Exception e){ok=false;result="FAIL: standalone render: "+e;}
             File.WriteAllText(Path.Combine(output,"standalone-result.txt"),result);
             Debug.Log(result);Application.Quit(ok?0:1);
+        }
+        static void SaveCapture(Camera camera,string path)
+        {
+            var target=RenderTexture.GetTemporary(1280,720,24);
+            UnityEngine.Rendering.RenderPipeline.SubmitRenderRequest(camera,new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest {destination=target});
+            var previous=RenderTexture.active;RenderTexture.active=target;
+            var texture=new Texture2D(1280,720,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,1280,720),0,0);texture.Apply();
+            File.WriteAllBytes(path,texture.EncodeToPNG());
+            RenderTexture.active=previous;Destroy(texture);RenderTexture.ReleaseTemporary(target);
         }
 #endif
     }

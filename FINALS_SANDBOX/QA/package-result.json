@@ -1,10 +1,10 @@
 {
   "result": "PASS",
-  "zip": "Deliverables/Mossmere-Windows-x64-v2.zip",
-  "bytes": 40395324,
+  "zip": "Deliverables/Mossmere-Windows-x64-v3.zip",
+  "bytes": 40396673,
   "files": 185,
   "architecture": "Windows x64 (AMD64)",
-  "sha256": "afedca6fb22cfaa4c01ef04eb148fce2ee1ed6aefdcdbe81f2e0651f769b3f88",
+  "sha256": "275364a0ccfa98074a51ea861118fab873fa5616511db93f3f688fb4c1b036d0",
   "required_runtime_files_verified": [
     "Mossmere.exe",
     "UnityPlayer.dll",
