@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "zip": "Deliverables/Mossmere-Windows-x64.zip",
+  "bytes": 39317707,
+  "files": 184,
+  "architecture": "Windows x64 (AMD64)",
+  "sha256": "1153a8bf93dd838d20733fa0a715e05d3d357239f323a51cd84a49504abf42b3",
+  "required_runtime_files_verified": [
+    "Mossmere.exe",
+    "UnityPlayer.dll",
+    "UnityCrashHandler64.exe",
+    "Mossmere_Data/boot.config",
+    "Mossmere_Data/globalgamemanagers",
+    "Mossmere_Data/level0",
+    "Mossmere_Data/Managed/Assembly-CSharp.dll",
+    "MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll"
+  ]
+}

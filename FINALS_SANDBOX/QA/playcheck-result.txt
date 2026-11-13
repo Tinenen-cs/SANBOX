@@ -1,0 +1,49 @@
+PASS
+PASS Player starts on Player collision layer
+PASS Imported player sprites assigned
+PASS Four return zones present
+PASS Reachable path to Lakeside pier
+PASS Reached expanded area Lakeside pier
+PASS Lakeside pier: trigger returns to spawn
+PASS Lakeside pier: movement cleared
+PASS Lakeside pier: input cleared
+PASS Lakeside pier: collision layer restored
+PASS Lakeside pier: rendering layers restored
+PASS Lakeside pier: solid player collider restored
+PASS Lakeside pier: camera recentered and mask restored
+PASS Reachable path to Northern lookout
+PASS Reached expanded area Northern lookout
+PASS Northern lookout: trigger returns to spawn
+PASS Northern lookout: movement cleared
+PASS Northern lookout: input cleared
+PASS Northern lookout: collision layer restored
+PASS Northern lookout: rendering layers restored
+PASS Northern lookout: solid player collider restored
+PASS Northern lookout: camera recentered and mask restored
+PASS Reachable path to West meadow
+PASS Reached expanded area West meadow
+PASS West meadow: trigger returns to spawn
+PASS West meadow: movement cleared
+PASS West meadow: input cleared
+PASS West meadow: collision layer restored
+PASS West meadow: rendering layers restored
+PASS West meadow: solid player collider restored
+PASS West meadow: camera recentered and mask restored
+PASS Reachable path to Woodland cottage
+PASS Reached expanded area Woodland cottage
+PASS Woodland cottage: trigger returns to spawn
+PASS Woodland cottage: movement cleared
+PASS Woodland cottage: input cleared
+PASS Woodland cottage: collision layer restored
+PASS Woodland cottage: rendering layers restored
+PASS Woodland cottage: solid player collider restored
+PASS Woodland cottage: camera recentered and mask restored
+PASS Southern loop route (-17.00, -8.00)
+PASS Southern loop route (-10.00, -15.00)
+PASS Southern loop route (0.00, -17.00)
+PASS Southern loop route (10.00, -14.00)
+PASS Southern loop route (17.00, -8.00)
+PASS Southern loop traversed in Play mode
+PASS Manual return clears residual motion
+PASS Manual return restores collision and rendering
+Completed: 2026-11-13T16:47:24.5790731+08:00

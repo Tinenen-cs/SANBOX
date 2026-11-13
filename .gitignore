@@ -1,0 +1,29 @@
+# Unity generated state
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+**/MemoryCaptures/
+**/Recordings/
+**/.vs/
+**/*.csproj
+**/*.sln
+**/*.slnx
+**/*.pidb
+**/*.pdb
+**/*.mdb
+**/*.opendb
+**/*.VC.db
+**/*.log
+.claude/
+.agents/
+.codex/
+Deliverables/
+**/workshop.command
+**/playcheck.run
+**/QA/*-editor.txt
+**/QA/playcheck-progress.txt
+# Obtain the source art from the original Asset Store publisher.
+FINALS_SANDBOX/Assets/TopDown 2D RPG BE3/
+FINALS_SANDBOX/Assets/TopDown 2D RPG BE3.meta

@@ -1,0 +1,7 @@
+Goldmetal Top-Down 2D RPG Assets Pack; product ID 188718; version 1.0.
+Imported path: Assets/TopDown 2D RPG BE3/
+Source demo: Assets/TopDown 2D RPG BE3/Demo/Demo.unity
+Expanded scene: Assets/Scenes/Mossmere.unity
+Original demo retained unchanged; original assemblies retained disabled in expanded scene.
+Terrain uses source sprite tiles. Four connected branches plus southern loop, four return zones. No HUD.
+Trees placed: 180
